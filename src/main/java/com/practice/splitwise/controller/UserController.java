@@ -32,6 +32,16 @@ public class UserController {
 
         // In english interpretation - If UserDTO value present, map it to SUCCESS response, otherwise map to NOT_FOUND
         return userDTO.map(ResponseDTO::success).orElse(ResponseDTO.notFound());
+        // lambda equivalent: userDTO.map(userObject -> ResponseDTO.success(userObject)).orElse(ResponseDTO.notFound());
+    }
+
+    @PutMapping("/user/{userId}")
+    public ResponseDTO<UserDTO> updateUser(@PathVariable Long userId, @RequestBody CreateUserDTO createUserDTO){
+        UserDTO userDTO =  userService.updateUser(userId, createUserDTO);
+        if(userDTO == null){
+            return ResponseDTO.notFound();
+        }
+        return ResponseDTO.success(userDTO);
     }
 }
 

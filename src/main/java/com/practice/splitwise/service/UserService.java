@@ -31,4 +31,19 @@ public class UserService {
     public Optional<User> getUser(Long userId) {
         return userRepository.findById(userId);
     }
+
+    public UserDTO updateUser(Long userId, CreateUserDTO createUserDTO) {
+        if(!userRepository.existsById(userId)){
+            return null;
+        }
+
+        User userToUpdate = User.from(createUserDTO, createUserDTO.getPassword());
+        userToUpdate.setId(userId); // Consider Path Variable as source of truth
+
+        User updateUser = userRepository.save(userToUpdate);
+
+        return UserDTO.from(userToUpdate);
+
+
+    }
 }
